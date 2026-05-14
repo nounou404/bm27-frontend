@@ -44,15 +44,15 @@ export default function ClientForm() {
     e.preventDefault();
     if (!selectedService || !formData.name || !formData.email) return;
     try {
-      const response = await fetch('https://bm27-control-center-backend.up.railway.app/inscription', {
+      const fd = new FormData();
+      fd.append('nom', formData.name);
+      fd.append('prenom', '');
+      fd.append('email', formData.email);
+      fd.append('telephone', formData.phone);
+      files.forEach(file => fd.append('file', file));
+      const response = await fetch('https://bm27-backend-production.up.railway.app/inscription', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nom: formData.name,
-          prenom: '',
-          email: formData.email,
-          telephone: formData.phone
-        })
+        body: fd
       });
       if (response.ok) {
         setSubmitted(true);
